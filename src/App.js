@@ -16,7 +16,7 @@ const App = () => {
   //     window.location.href = 'https://3313-2401-4900-1c67-1844-1472-6f1-71af-21b3.ngrok-free.app/login';
   //   }
   // },[localStorage])
-  const socket = io('http://localhost:5000');
+  const socket = io('https://fb-helpdesk-richpanel.onrender.com');
   // , {
   //   // withCredentials: true
   // }); 

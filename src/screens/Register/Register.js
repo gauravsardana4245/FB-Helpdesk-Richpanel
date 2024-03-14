@@ -21,7 +21,7 @@ const Register = () => {
 
   const registerUser = async ()=> {
 
-    fetch(`http://localhost:5000/api/auth/register`, {
+    fetch(`https://fb-helpdesk-richpanel.onrender.com/api/auth/register`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

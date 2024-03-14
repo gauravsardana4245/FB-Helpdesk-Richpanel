@@ -12,7 +12,7 @@ const Dashboard = () => {
   const [sdkLoaded, setSdkLoaded] = useState(false);
   const [token,setToken] = useState(null);
   const [loading, setLoading] = useState(false);
-  const backendHost = "http://localhost:5000";
+  const backendHost = "https://fb-helpdesk-richpanel.onrender.com";
   // const { login, status, isLoading, error} = useLogin();
 
   useEffect(()=> {
