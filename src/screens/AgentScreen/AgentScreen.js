@@ -12,6 +12,7 @@ const AgentScreen = (props) => {
   const [messageArrayChanged,setMessageArrayChanged] = useState(false);
   const [selectedPage, setSelectedPage] = useState(null);
   const [currentConversation, setCurrentConversation] = useState({});
+  const [conversationsLength, setConversationsLength] = useState(1);
   const [loadingConversations, setLoadingConversations] = useState(false);
 
   useEffect(()=> {
@@ -28,11 +29,11 @@ const AgentScreen = (props) => {
     <div className="agent-screen container-fluid mt-5">
       <div className="agent-screen-div">
         <div className="conversation-list-div">
-          <ConversationList setLoadingConversations={setLoadingConversations}  messageArrayChanged={messageArrayChanged} currentConversation={currentConversation} selectedPage={selectedPage} setCurrentConversation={setCurrentConversation}/>
+          <ConversationList setConversationsLength={setConversationsLength} setLoadingConversations={setLoadingConversations}  messageArrayChanged={messageArrayChanged} currentConversation={currentConversation} selectedPage={selectedPage} setCurrentConversation={setCurrentConversation}/>
         </div>
         <div className="conversation-thread-div">
 
-              <ConversationThread loadingConversations={loadingConversations} messageArrayChanged={messageArrayChanged} setMessageArrayChanged={setMessageArrayChanged} socket={socket} userDetails={userDetails} userFaceBookId={userFaceBookId} selectedPage={selectedPage} currentConversation={currentConversation}/>
+              <ConversationThread conversationsLength={conversationsLength} loadingConversations={loadingConversations} messageArrayChanged={messageArrayChanged} setMessageArrayChanged={setMessageArrayChanged} socket={socket} userDetails={userDetails} userFaceBookId={userFaceBookId} selectedPage={selectedPage} currentConversation={currentConversation}/>
 
         </div>
         <div className="customer-profile-div">

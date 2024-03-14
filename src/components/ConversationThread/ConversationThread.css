@@ -115,3 +115,10 @@
   align-items: center;
   margin-right: 10px;
 }
+.noConversationsDiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}

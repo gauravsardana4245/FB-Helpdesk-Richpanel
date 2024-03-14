@@ -5,10 +5,12 @@ import sendButton from "../../assets/send.png"
 import sendDisabledButton from "../../assets/sendDisabled.png"
 import io from 'socket.io-client';
 import { BeatLoader } from 'react-spinners';
+import { useNavigate } from 'react-router-dom';
 
-const ConversationThread = ({selectedPage, currentConversation, userFaceBookId, userDetails, socket,messageArrayChanged, setMessageArrayChanged ,loadingConversations}) => {
-  const [loadingConversations2, setLoadingConversations2] = useState(false);
+const ConversationThread = ({selectedPage, currentConversation, userFaceBookId, userDetails, socket,messageArrayChanged, setMessageArrayChanged ,loadingConversations, conversationsLength}) => {
+  const [loadingConversations2, setLoadingConversations2] = useState(true);
   const [newMessage, setNewMessage] = useState('');
+  const [conversationsLengthNew, setConversationsLengthNew] = useState(1);
   const [messageArray, setMessageArray] = useState([]);
   const [customerId, setCustomerId] = useState(null);
   const [conversatonId, setConversatonId] = useState(null);
@@ -21,10 +23,16 @@ const ConversationThread = ({selectedPage, currentConversation, userFaceBookId, 
   const [canReply, setCanReply] = useState(true);
   const [sendingMessage, setSendingMessage] = useState(false);
   const [loading, setLoading] = useState(false);
+  let navigate = useNavigate();
 
   const [page, setPage] = useState(null);
 
   const messageThreadRef = useRef(null);
+
+  useEffect(()=> {
+    
+    setConversationsLengthNew(conversationsLength);
+  },[conversationsLength])
 
   useEffect(()=> {
     if(selectedPage) {
@@ -66,9 +74,11 @@ const ConversationThread = ({selectedPage, currentConversation, userFaceBookId, 
   };
 
   useEffect(()=> {
+    if(currentConversation) {
     if(currentConversation.customerId) {
       setCustomerId(currentConversation.customerId);
     }
+  }
   },[currentConversation])
 
   useEffect(()=> {
@@ -78,25 +88,27 @@ const ConversationThread = ({selectedPage, currentConversation, userFaceBookId, 
   },[customerId])
 
   useEffect(()=> {
-    if(currentConversation.messages) {
-      setLoadingConversations2(true);
-      setConversatonId(currentConversation._id);
-      const fetchedMessageArray = currentConversation.messages;
-      const reverseArray = fetchedMessageArray.slice().reverse();
-      console.log("messageArray1234: ", fetchedMessageArray);
-      setMessageArray(fetchedMessageArray);
-      const firstMessageData = fetchedMessageArray[0];
-      setCustomerId(firstMessageData.from.id);
-      
-      setLastMessage(reverseArray[0]);
-      console.log("lastMessage: ", reverseArray[0]);
+    if(currentConversation) {
+      if(currentConversation.messages) {
+        setLoadingConversations2(false);
+        setConversatonId(currentConversation._id);
+        const fetchedMessageArray = currentConversation.messages;
+        const reverseArray = fetchedMessageArray.slice().reverse();
+        console.log("messageArray1234: ", fetchedMessageArray);
+        setMessageArray(fetchedMessageArray);
+        const firstMessageData = fetchedMessageArray[0];
+        setCustomerId(firstMessageData.from.id);
+        
+        setLastMessage(reverseArray[0]);
+        console.log("lastMessage: ", reverseArray[0]);
 
-      const currentTime = new Date();
-      const lastMessageTime = new Date(reverseArray[0].created_time);
-      const timeDifference = +currentTime - +lastMessageTime;
+        const currentTime = new Date();
+        const lastMessageTime = new Date(reverseArray[0].created_time);
+        const timeDifference = +currentTime - +lastMessageTime;
 
-      setCanReply(timeDifference < 24 * 60 * 60 * 1000);
-    }
+        setCanReply(timeDifference < 24 * 60 * 60 * 1000);
+      }
+  }
   },[currentConversation])
 
 
@@ -156,15 +168,28 @@ const ConversationThread = ({selectedPage, currentConversation, userFaceBookId, 
     
   };
 
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  // if(conversationsLength===0) {
+  //   return (<div>No conversations to display</div>) 
+  // }
+  
   return (
     <div className="conversation-thread">
       <div className='conversation-thread-header'>
-      {!loadingConversations2 && (
+      {loadingConversations2 && (
         <div className="loading-overlay">
+          {conversationsLengthNew===0 ?  <div className='noConversationsDiv'> 
+            <div>No conversations to display </div>
+            <button onClick={() => navigate(-1)}>Back to Page Selection</button> 
+            </div> :
+          (<div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
          <div className='actionText'> Loading Conversations </div>
-          {/* <div className="circular-loader"></div> */}
-          
-        <BeatLoader color="grey" />
+        <BeatLoader color="grey"/> 
+        </div>)
+        }
         </div>
       )}
       <h3>{customerData.name}</h3>
@@ -219,5 +244,4 @@ const ConversationThread = ({selectedPage, currentConversation, userFaceBookId, 
     </div>
   );
 };
-
 export default ConversationThread;

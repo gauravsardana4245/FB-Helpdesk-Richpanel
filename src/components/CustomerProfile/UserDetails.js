@@ -17,7 +17,7 @@ const UserDetails = ({ customerData, firstName, lastName }) => {
         <span className='detailHead'>Email:</span> <span className={`${email=="Not Available"? "not-available" : "available"} detailContent`}>{email}</span>
       </div>
       <div className='detail'>
-        <span className='detailHead' >First Name:</span> <span className='detailContent'> {firstName} </span>
+        <span className='detailHead' >First Name:</span> <span className='detailContent'> {firstName!=="user" && firstName} </span>
       </div>
       <div className='detail'>
         <span className='detailHead'>Last Name:</span> <span className='detailContent'>{lastName} </span>

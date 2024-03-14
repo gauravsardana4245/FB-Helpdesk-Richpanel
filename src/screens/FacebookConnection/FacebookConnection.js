@@ -22,6 +22,7 @@ const FacebookConnection = () => {
   const [action, setAction] = useState("Action");
   const backendHost = "https://fb-helpdesk-richpanel.onrender.com";
 
+
   useEffect(() => {
     if(!localStorage.getItem("token") || location.state==null) {
       navigate('/login');
@@ -41,6 +42,8 @@ const FacebookConnection = () => {
   }, [location.state]);
 
   useEffect(() => {
+    setLoading(true);
+    setAction("Fetching Pages");
     const fetchPages = async () => {
       try {
         const response = await axios.get(
@@ -49,8 +52,10 @@ const FacebookConnection = () => {
         setPages(response.data.data);
         console.log("pages12345: ", response.data.data);
         fetchConnectedPages();
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching pages:', error);
+        setLoading(false);
       }
     };
 
@@ -58,10 +63,13 @@ const FacebookConnection = () => {
   }, [userAccessToken]);
 
   useEffect(() => {
+    setLoading(true);
+    setAction("Fetching Pages");
     const notConnectedPagesList = pages.filter((page) => !connectedPages.some((connectedPage) => connectedPage.pageId === page.id));
     setNotConnectedPages(notConnectedPagesList);
     console.log("notConnectedPages: ", notConnectedPages);
     console.log("connectedPages: ", connectedPages);
+    setLoading(false);
   }, [pages, connectedPages]);
 
   const fetchConnectedPages = async () => {
@@ -81,7 +89,10 @@ const FacebookConnection = () => {
   };
 
   useEffect(()=> {
+    setLoading(true);
+    setAction("Fetching Pages");
     fetchConnectedPages();
+    setLoading(false);
   },[])
 
   useEffect(()=> {
@@ -175,7 +186,7 @@ const navigateToConversations = (page)=> {
       <div className='availablePagesDiv'>
         <div className='headDiv'>Available Pages </div>
       <div className='availablePages'>
-        {notConnectedPages.length===0 && <div> No Pages Available for Selection </div>}
+        {notConnectedPages.length===0 && <div> No Page Available for Selection </div>}
           {notConnectedPages.map((page) => (
             <div className='pageBox' key={page.id}>
               <div>Page: <span className='pageName'>{page.name} </span></div>

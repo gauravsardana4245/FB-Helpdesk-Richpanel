@@ -3,7 +3,7 @@ import './ConversationList.css';
 import ConversationBox from '../ConversationBox/ConversationBox';
 import loader from "../../assets/loader3.gif"
 
-const ConversationList = ({ selectedPage, setCurrentConversation, currentConversation, messageArrayChanged, setLoadingConversations }) => {
+const ConversationList = ({ selectedPage, setCurrentConversation, currentConversation, messageArrayChanged, setLoadingConversations, setConversationsLength }) => {
   const [, setState] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -36,7 +36,7 @@ const ConversationList = ({ selectedPage, setCurrentConversation, currentConvers
         const fetchedConversations = data;
         console.log("fetchedConversations123: ", fetchedConversations);
         
-
+        setConversationsLength(fetchedConversations.length);
         setCurrentConversation(fetchedConversations[0]);
         console.log("currentConversation123: ", fetchedConversations[0]);
  

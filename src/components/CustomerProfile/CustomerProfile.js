@@ -45,13 +45,15 @@ const CustomerProfile = ({currentConversation, selectedPage}) => {
   },[customerId])
 
   useEffect(()=> {
-    if(currentConversation.messages) {
-      const fetchedMessageArray = currentConversation.messages;
+    if(currentConversation) {
+      if(currentConversation.messages) {
+        const fetchedMessageArray = currentConversation.messages;
 
-      const firstMessageData = fetchedMessageArray[0];
+        const firstMessageData = fetchedMessageArray[0];
 
-      setCustomerId(firstMessageData.from.id);
-    }
+        setCustomerId(firstMessageData.from.id);
+      }
+  }
   },[currentConversation])
 
   return (
