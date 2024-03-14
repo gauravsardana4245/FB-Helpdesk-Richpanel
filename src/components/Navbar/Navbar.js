@@ -19,7 +19,10 @@ const Navbar = ({user}) => {
     }   
 
     function parseJwt (token) {
+        if(typeof token !== "undefined") {
+        console.log("token: ", token);
         var base64Url = token.split('.')[1];
+        console.log("base64Url: ", base64Url);
         var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
         var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
             return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
@@ -27,13 +30,16 @@ const Navbar = ({user}) => {
     
         return JSON.parse(jsonPayload);
     }
+    }
 
     useEffect(()=> {
         if(localStorage.getItem("token")) {
             const token = localStorage.getItem("token")
-            const decoded = parseJwt(token);
-            console.log("decoded: ", decoded);
-            setDecodedData(decoded)
+            if(token!=null && (typeof token !== "undefined")) {
+                const decoded = parseJwt(token);
+                console.log("decoded: ", decoded);
+                setDecodedData(decoded)
+            }
             // const user = decodedData.decoded.user;
             // setUser
         }

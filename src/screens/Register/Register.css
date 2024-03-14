@@ -62,3 +62,8 @@
 .redirect-div {
     margin-top: 5px;
 }
+.errorText {
+    color: red;
+    text-align: center;
+    font-weight: 400;
+}

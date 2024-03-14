@@ -9,6 +9,7 @@ const Register = () => {
   // const dispatch = useDispatch();
   const navigate = useNavigate();
   const [name, setName] = useState('');
+  const [error, setError] = useState(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -20,38 +21,60 @@ const Register = () => {
   },[])
 
   const registerUser = async ()=> {
-
-    fetch(`https://fb-helpdesk-richpanel.onrender.com/api/auth/register`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({'name': name, 'email': email, 'password': password })
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ');
-                }
-                return response.json();
-            })
-            .then(data => {
-                setUser(data);
-                localStorage.setItem("token", data.authtoken);
-                console.log("data123: ", data);
-                navigate('/home', {state: {userData: data}});
-            })
-            .catch(error => {
-                console.log(error);
-                alert("Registeration not successful!")
-            });
-          setLoading(false);
+    try {
+      const response =  await fetch(`https://fb-helpdesk-richpanel.onrender.com/api/auth/register`, {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify({'name': name, 'email': email, 'password': password })
+      })
+      const data = await response.json();
+      if(data.status==false) {
+        // alert(data.error);
+        alert(data.error)
+        setError(data.error)
+        return;
+      }
+      else {  
+        console.log("SignupRes: ", data);
+        setUser(data);  
+        localStorage.setItem("token", data.authtoken);
+        console.log("data123: ", data);
+        navigate('/home', {state: {userData: data}});
+        setLoading(false);
+        // console.log("token: ", localStorage.getItem("token"));
+      }
+      }    
+    catch(error) {
+          console.log(error);
+          alert("Not able to signup right now! Please try again later")
+    }
   }
 
   const handleRegister = (e) => {
     e.preventDefault();
+    if(name.length===0) {
+      setError("Please enter your name in order to sign up!");
+      return;
+    }
+    if(email.length===0) {
+      setError("Please enter your email in order to sign up!");
+      return;
+    }
+    if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
+      setError("Please enter a valid email!");
+      return;
+    }
+    if(password.length===0) {
+      setError("Please set a password in order to signup!");
+      return;
+    }
+    setError(null);
     setLoading(true);
     setTimeout(()=> {
       registerUser();
+      setLoading(false);
     },2000)
   };
 
@@ -76,6 +99,7 @@ const Register = () => {
       <input type="checkbox" id="remembercheck" name="remembercheck" value="remembercheck" />
       <label htmlFor="remembercheck"> Remember me</label><br></br>
       </div>
+      {error && <div className='errorText'> {error} </div>}
       <button className='auth-button' onClick={handleRegister}>
       {!loading? "Sign Up":
                 // <div>
