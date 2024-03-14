@@ -20,7 +20,8 @@ const FacebookConnection = () => {
   const [selectedPageIds, setSelectedPageIds] = useState([]);
   const [selectedPages, setSelectedPages] = useState([]);
   const [action, setAction] = useState("Action");
-  const backendHost = "https://fb-helpdesk-richpanel.onrender.com";
+  // const backendHost = "https://fb-helpdesk-richpanel.onrender.com";
+  const backendHost = "http://localhost:5000"
 
 
   useEffect(() => {
@@ -156,7 +157,7 @@ const disconnectPage = async (pageId)=> {
     setLoading(false);
     fetchConnectedPages();
     setConnectedPages((prev) => prev.filter((connectedPage) => connectedPage.id !== pageId));
-    alert("Page Dsiconnected Succesfully!");
+    alert("Page Disconnected Succesfully!");
     }
     catch (error) {
       console.log(error);

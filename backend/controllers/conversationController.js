@@ -24,6 +24,12 @@ const updateConversation = async (req, res) => {
 
   const createOrUpdateConversations = async (page) => {
     try {
+      const existingConversations = await Conversation.find({ pageId: page.id });
+  
+      if (existingConversations.length > 0) {
+        await Message.deleteMany({ pageId: page.id });
+        await Conversation.deleteMany({ pageId: page.id });
+      }
 
       // fetching conversations of that page
       const conversationsResponse = await fetch(`https://graph.facebook.com/v10.0/${page.id}/conversations?access_token=${page.access_token}`);
@@ -32,13 +38,7 @@ const updateConversation = async (req, res) => {
       const conversationsArray = data.data;
      
       for (const conversationObject of conversationsArray) {
-        const existingConversations = await Conversation.find({ pageId: page.id });
-  
-        if (existingConversations.length > 0) {
-          await Message.deleteMany({ pageId: page.id });
-          await Conversation.deleteMany({ pageId: page.id });
-        }
-
+      
         // Splitting the conversation based on the gap of more than 24 hours
         const conversationsToStore = [];
         let currentConversation = [];
