@@ -20,8 +20,8 @@ const FacebookConnection = () => {
   const [selectedPageIds, setSelectedPageIds] = useState([]);
   const [selectedPages, setSelectedPages] = useState([]);
   const [action, setAction] = useState("Action");
-  // const backendHost = "https://fb-helpdesk-richpanel.onrender.com";
-  const backendHost = "http://localhost:5000"
+  const backendHost = "https://fb-helpdesk-richpanel.onrender.com";
+  // const backendHost = "http://localhost:5000"
 
 
   useEffect(() => {
