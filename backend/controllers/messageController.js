@@ -41,7 +41,7 @@ const sendMessage = async (req, res) => {
       await newMessage.save();
       const updatedConversation = await Conversation.findOneAndUpdate(
         { _id: conversationId },
-        { $push: { messages: newMessage } }
+        { $push: { messages: newMessage }, lastMessageCreatedAt: created_time }
      )
 
     res.status(201).json({message: "message sent successfully"});

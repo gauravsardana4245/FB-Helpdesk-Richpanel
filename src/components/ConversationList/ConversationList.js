@@ -14,6 +14,15 @@ const ConversationList = ({ selectedPage, setCurrentConversation, currentConvers
     setLoading(false);
   },2000);
   }
+ function compare( a, b ) {
+    if ( a.lastMessageCreatedAt > b.lastMessageCreatedAt ){
+      return -1;
+    }
+    if ( a.lastMessageCreatedAt < b.lastMessageCreatedAt ){
+      return 1;
+    }
+    return 0;
+  }
 
   const backendHost = "https://fb-helpdesk-richpanel.onrender.com";
 
@@ -33,6 +42,7 @@ const ConversationList = ({ selectedPage, setCurrentConversation, currentConvers
         }
         );
         const data = await response.json();
+        await data.sort( compare );
         const fetchedConversations = data;
         console.log("fetchedConversations123: ", fetchedConversations);
         

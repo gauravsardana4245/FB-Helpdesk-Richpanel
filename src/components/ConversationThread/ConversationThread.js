@@ -19,7 +19,7 @@ const ConversationThread = ({selectedPage, currentConversation, userFaceBookId, 
   const [messageData, setMessageData] = useState({from: {}});
   const [messages, setMessages] = useState([]);
   const [user, setUser] = useState(null);
-  const [backendHost, setBackendHost] = useState("https://fb-helpdesk-richpanel.onrender.com");
+  const [backendHost, setBackendHost] = useState("http://localhost:5000");
   const [canReply, setCanReply] = useState(true);
   const [sendingMessage, setSendingMessage] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -150,6 +150,7 @@ const ConversationThread = ({selectedPage, currentConversation, userFaceBookId, 
       }
       );
       const data = await response.json();
+      setMessageArrayChanged((prev)=>!prev);
       setNewMessage('');
       // const {pageId,created_time,from,to,message} = data;
       // setMessageArray((prev)=> [...prev,{pageId,created_time,from,to,message}]);
@@ -161,8 +162,6 @@ const ConversationThread = ({selectedPage, currentConversation, userFaceBookId, 
       console.error('Error sending message:', error);
       setSendingMessage(false);
     }
-    setMessageArrayChanged((prev)=>!prev);
-
     // setNewMessage('');
     
   };
