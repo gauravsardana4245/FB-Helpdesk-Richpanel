@@ -24,7 +24,7 @@ const CustomerProfile = ({currentConversation, selectedPage}) => {
       setLastName(nameArr[1]);
     }
   }
-  },[customerData])
+  },[customerData, currentConversation])
 
   const fetchUserDetails = async (id) => {
     try {
@@ -46,12 +46,8 @@ const CustomerProfile = ({currentConversation, selectedPage}) => {
 
   useEffect(()=> {
     if(currentConversation) {
-      if(currentConversation.messages) {
-        const fetchedMessageArray = currentConversation.messages;
-
-        const firstMessageData = fetchedMessageArray[0];
-
-        setCustomerId(firstMessageData.from.id);
+      if(currentConversation.customerId) {
+        setCustomerId(currentConversation.customerId);
       }
   }
   },[currentConversation])

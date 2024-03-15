@@ -46,9 +46,9 @@ const updateConversation = async (req, res) => {
         const response1 = await fetch(`https://graph.facebook.com/v10.0/${conversationObject.id}?fields=messages&access_token=${page.access_token}`);
         const messagesData = await response1.json();
         const messageArr = messagesData.messages.data;
-        console.log("messageArrfromBackend: ", messageArr)
+        // console.log("messageArrfromBackend: ", messageArr)
         const sortedMessages = messageArr.sort((a, b) => new Date(a.created_time) - new Date(b.created_time));
-        console.log("sortedMessages: ", sortedMessages)
+        // console.log("sortedMessages: ", sortedMessages)
         const firstMessage = sortedMessages[0];
 
 
@@ -83,19 +83,20 @@ const updateConversation = async (req, res) => {
           for(let message of sortedConversation) {
             console.log("curr_message: ", message);
             const currMessageRequest = await fetch(`https://graph.facebook.com/v10.0/${message.id}?fields=id,created_time,from,to,message&access_token=${page.access_token}`);
-          const currtMessageData = await currMessageRequest.json();
-          const messageSender = currtMessageData.from;
-          const messageSenderId = messageSender.id;
+            const currtMessageData = await currMessageRequest.json();
+            const messageSender = currtMessageData.from;
+            const messageSenderId = messageSender.id;
             if(messageSenderId!==page.id) {
               firstMessage2 = message;
               firstMessageSenderId = messageSenderId;
               break;
             }
           }
-
+          console.log("firstMessage21: ", firstMessage2);
           if(firstMessage2===null) {
             continue;
           }
+          console.log("firstMessage22: ", firstMessage2);
           
           const newConversation = new Conversation({
             pageId: page.id,
@@ -103,6 +104,8 @@ const updateConversation = async (req, res) => {
             customerId: firstMessageSenderId,
             lastMessageCreatedAt: new Date(sortedConversation[sortedConversation.length - 1].created_time),
           });
+
+          console.log("sortedConversation123: ", sortedConversation);
 
           for(const messageItem of sortedConversation ) {
           

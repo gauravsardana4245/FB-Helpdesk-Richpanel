@@ -36,9 +36,9 @@ const ConversationList = ({ selectedPage, setCurrentConversation, currentConvers
         const fetchedConversations = data;
         console.log("fetchedConversations123: ", fetchedConversations);
         
-        setConversationsLength(fetchedConversations.length);
-        setCurrentConversation(fetchedConversations[0]);
-        console.log("currentConversation123: ", fetchedConversations[0]);
+        setConversationsLength(data.length);
+        setCurrentConversation(data[0]);
+        console.log("currentConversation123: ", data[0]);
  
         setConversations(data);
         setLoadingConversations(false);

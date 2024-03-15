@@ -51,7 +51,7 @@ const connectPage = async (req, res) => {
     const existingPage = await FacebookPage.findOne({ pageId: page.id , facebookId: facebookId });
 
     if (existingPage) {
-      return res.status(400).json({ message: 'Pages already connected by the user', existingPage });
+      return res.status(400).json({ message: 'Page already connected by the user', existingPage });
     }
 
     const resData = await createOrUpdateConversations(page);

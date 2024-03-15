@@ -30,7 +30,6 @@ const ConversationThread = ({selectedPage, currentConversation, userFaceBookId, 
   const messageThreadRef = useRef(null);
 
   useEffect(()=> {
-    
     setConversationsLengthNew(conversationsLength);
   },[conversationsLength])
 
@@ -76,6 +75,7 @@ const ConversationThread = ({selectedPage, currentConversation, userFaceBookId, 
   useEffect(()=> {
     if(currentConversation) {
     if(currentConversation.customerId) {
+      console.log("currentConversation: ", currentConversation);
       setCustomerId(currentConversation.customerId);
     }
   }
@@ -83,6 +83,7 @@ const ConversationThread = ({selectedPage, currentConversation, userFaceBookId, 
 
   useEffect(()=> {
      if(customerId) {
+      console.log("customerId: ", customerId);
       fetchUserDetails(customerId);
      }
   },[customerId])
@@ -96,8 +97,6 @@ const ConversationThread = ({selectedPage, currentConversation, userFaceBookId, 
         const reverseArray = fetchedMessageArray.slice().reverse();
         console.log("messageArray1234: ", fetchedMessageArray);
         setMessageArray(fetchedMessageArray);
-        const firstMessageData = fetchedMessageArray[0];
-        setCustomerId(firstMessageData.from.id);
         
         setLastMessage(reverseArray[0]);
         console.log("lastMessage: ", reverseArray[0]);
